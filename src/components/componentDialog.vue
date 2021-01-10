@@ -5,8 +5,9 @@
     :before-close="handleCloseDialog"
   >
     <el-form>
-      <el-input placeholder="Name" type="text" v-model="form.name"> </el-input>
-      <el-input placeholder="Address" type="text" v-model="form.address">
+      <el-input placeholder="Name" type="text" v-model="formData.name">
+      </el-input>
+      <el-input placeholder="Address" type="text" v-model="formData.address">
       </el-input>
       <template class="dialog-footer">
         <el-button @click="handleCloseDialog">Cancel</el-button>
@@ -17,6 +18,7 @@
 </template>
 <script>
 const formDefault = {
+  id: undefined,
   name: "",
   address: "",
 };
@@ -37,7 +39,6 @@ export default {
   data() {
     return {
       dialog: this.visible,
-      form: { ...this.formData },
     };
   },
   watch: {
@@ -47,8 +48,7 @@ export default {
   },
   methods: {
     onSave() {
-      //   console.log(this.form);
-      const _form = { ...this.form };
+      const _form = { ...this.formData };
       this.$emit("onSubmit", _form);
       this.form = { ...formDefault };
       this.handleCloseDialog();

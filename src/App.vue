@@ -4,14 +4,8 @@
       <el-button type="text" size="small" @click="onAdd">Add</el-button>
     </el-card>
     <el-table style="width: 100%" :data="data">
-      <el-table-column prop="name" label="Name" width="500" v-model="form.name">
-      </el-table-column>
-      <el-table-column
-        prop="address"
-        label="Address"
-        min-width="180"
-        v-model="form.address"
-      >
+      <el-table-column prop="name" label="Name" width="500"> </el-table-column>
+      <el-table-column prop="address" label="Address" min-width="180">
       </el-table-column>
       <el-table-column label="Action">
         <template slot-scope="scope">
@@ -69,28 +63,26 @@ export default {
     handleSubmit(_form) {
       if (this.mode === "ADD") {
         this.data.push({
-          id: 123,
+          id: Math.round(Math.random() * 10000),
           name: _form.name,
           address: _form.address,
         });
       } else {
-        const index = this.data.findIndex((item) => item.id === this.form.id);
-        this.data[index] = this.form;
+        const _form = { ...this.form };
+        const index = this.data.findIndex((item) => item.id === _form.id);
+        this.data.splice(index, 1, { ..._form });
+        this.mode = "ADD";
       }
-
-      // console.log({
-      //   id: 123,
-      //   name: data.name,
-      //   address: data.address,
-      // });
+      this.form = { ...defaultForm };
     },
     onAdd() {
       this.mode = "ADD";
       this.dialog = true;
     },
     onEdit(dataEdit) {
-      this.form = { ...dataEdit };
       this.mode = "EDIT";
+      const _dataEdit = { ...dataEdit };
+      this.form = { ..._dataEdit };
       this.dialog = true;
     },
     onRemove(index, rows) {
